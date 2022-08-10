@@ -5,10 +5,11 @@ import org.DouifiAbdellah.EmployeeManager.model.Employee;
 import org.DouifiAbdellah.EmployeeManager.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin("*")
 @Service
 public class EmployeeServiceImpl implements EmployeeServices{
 
@@ -37,5 +38,9 @@ public class EmployeeServiceImpl implements EmployeeServices{
 
     public void deleteEmployee (Long id){
         employeeRepository.deleteEmployeeById(id);
+    }
+
+    public boolean existsById(Long aLong){
+       return employeeRepository.existsById(aLong);
     }
 }

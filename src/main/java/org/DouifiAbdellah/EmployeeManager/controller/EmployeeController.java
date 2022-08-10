@@ -7,8 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
+import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
+
+
+//@CrossOrigin(origins = {"http://localhost:4200","http://randim-dev.itn.intraorange:8080/"} )
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -24,10 +31,18 @@ public class EmployeeController {
         List<Employee> employees = employeeServices.findAllEmployee();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
+    @GetMapping(path = "/getImg/{fileName}",produces = IMAGE_PNG_VALUE)
+    public byte[]  getEmployeeImg(@PathVariable("fileName") String filename) throws IOException {
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/data/imges/"+filename));
+    }
     @GetMapping("/find/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id")Long id){
         Employee employee = employeeServices.findEmployeeById(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+    @GetMapping("/test/{id}")
+    public Boolean testIfExist(@PathVariable("id")Long id){
+        return employeeServices.existsById(id);
     }
     @PostMapping("/add")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
@@ -41,7 +56,7 @@ public class EmployeeController {
         return new ResponseEntity<>(newEmployee, HttpStatus.OK );
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?>  deleteEmployee(@PathVariable("id")Long id){
        employeeServices.deleteEmployee( id);
         return new ResponseEntity<>( HttpStatus.OK );

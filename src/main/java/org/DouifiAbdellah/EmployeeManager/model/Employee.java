@@ -1,12 +1,16 @@
 package org.DouifiAbdellah.EmployeeManager.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Employee  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +24,11 @@ public class Employee  implements Serializable {
     @Column(nullable = false,updatable = false)
     private String employeeCode;
 
+    public Employee(String name, String email, String jobTitle, String phone, String imgUrl) {
+        this.name = name;
+        this.email = email;
+        this.jobTitle = jobTitle;
+        this.Phone = phone;
+        this.imgUrl = imgUrl;
+    }
 }
